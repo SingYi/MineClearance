@@ -8,6 +8,15 @@
 
 #import "MCModel.h"
 
+
+@interface MCModel ()
+
+/** 每一局的地雷 */
+
+
+
+@end
+
 static MCModel *model = nil;
 @implementation MCModel
 

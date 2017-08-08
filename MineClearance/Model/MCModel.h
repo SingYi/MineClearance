@@ -11,7 +11,13 @@
 @interface MCModel : NSObject
 
 /** 显示数组 */
-@property (nonatomic, strong) NSArray *showArray;
+@property (nonatomic, strong, readonly) NSArray *modelArray;
+
+/** 行数 */
+@property (nonatomic, assign) NSInteger rowNumber;
+/** 列数 */
+@property (nonatomic, assign) NSInteger ColumnNumber;
+
 
 
 + (MCModel *)sharedModel;
