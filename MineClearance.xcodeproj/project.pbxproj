@@ -12,6 +12,10 @@
 		B57023621F3966FD000D8170 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B570235D1F396612000D8170 /* LaunchScreen.storyboard */; };
 		B57023651F39674A000D8170 /* MCAppdelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B57023641F39674A000D8170 /* MCAppdelegate.m */; };
 		B57023691F396D5E000D8170 /* MCModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B57023681F396D5E000D8170 /* MCModel.m */; };
+		B5F46CD31F39BA4000220874 /* ControllerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F46CD21F39BA4000220874 /* ControllerManager.m */; };
+		B5F46CD61F39BD7800220874 /* MCGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F46CD51F39BD7800220874 /* MCGuideViewController.m */; };
+		B5F46CD91F39BD8300220874 /* MCGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F46CD81F39BD8300220874 /* MCGameViewController.m */; };
+		B5F46CDC1F39C1C800220874 /* MCGameViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F46CDB1F39C1C800220874 /* MCGameViewModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +29,14 @@
 		B57023661F39682E000D8170 /* MCPCH.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCPCH.pch; sourceTree = "<group>"; };
 		B57023671F396D5E000D8170 /* MCModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCModel.h; sourceTree = "<group>"; };
 		B57023681F396D5E000D8170 /* MCModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCModel.m; sourceTree = "<group>"; };
+		B5F46CD11F39BA4000220874 /* ControllerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControllerManager.h; sourceTree = "<group>"; };
+		B5F46CD21F39BA4000220874 /* ControllerManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControllerManager.m; sourceTree = "<group>"; };
+		B5F46CD41F39BD7800220874 /* MCGuideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCGuideViewController.h; sourceTree = "<group>"; };
+		B5F46CD51F39BD7800220874 /* MCGuideViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCGuideViewController.m; sourceTree = "<group>"; };
+		B5F46CD71F39BD8300220874 /* MCGameViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCGameViewController.h; sourceTree = "<group>"; };
+		B5F46CD81F39BD8300220874 /* MCGameViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCGameViewController.m; sourceTree = "<group>"; };
+		B5F46CDA1F39C1C800220874 /* MCGameViewModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCGameViewModel.h; sourceTree = "<group>"; };
+		B5F46CDB1F39C1C800220874 /* MCGameViewModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCGameViewModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,8 +71,8 @@
 			children = (
 				B570235E1F396612000D8170 /* Controller */,
 				B57023581F396612000D8170 /* Model */,
-				B570235C1F396612000D8170 /* View */,
 				B570235B1F396612000D8170 /* ViewModel */,
+				B570235C1F396612000D8170 /* View */,
 				B57023591F396612000D8170 /* Other */,
 				B570234B1F3963B0000D8170 /* Assets.xcassets */,
 			);
@@ -88,6 +100,8 @@
 		B570235B1F396612000D8170 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				B5F46CDA1F39C1C800220874 /* MCGameViewModel.h */,
+				B5F46CDB1F39C1C800220874 /* MCGameViewModel.m */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -106,8 +120,30 @@
 				B570235F1F396612000D8170 /* main.m */,
 				B57023631F39674A000D8170 /* MCAppdelegate.h */,
 				B57023641F39674A000D8170 /* MCAppdelegate.m */,
+				B5F46CD11F39BA4000220874 /* ControllerManager.h */,
+				B5F46CD21F39BA4000220874 /* ControllerManager.m */,
+				B5F46CCF1F39BA2100220874 /* GuideClass */,
+				B5F46CD01F39BA2100220874 /* GameClass */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		B5F46CCF1F39BA2100220874 /* GuideClass */ = {
+			isa = PBXGroup;
+			children = (
+				B5F46CD41F39BD7800220874 /* MCGuideViewController.h */,
+				B5F46CD51F39BD7800220874 /* MCGuideViewController.m */,
+			);
+			path = GuideClass;
+			sourceTree = "<group>";
+		};
+		B5F46CD01F39BA2100220874 /* GameClass */ = {
+			isa = PBXGroup;
+			children = (
+				B5F46CD71F39BD8300220874 /* MCGameViewController.h */,
+				B5F46CD81F39BD8300220874 /* MCGameViewController.m */,
+			);
+			path = GameClass;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,8 +215,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5F46CDC1F39C1C800220874 /* MCGameViewModel.m in Sources */,
+				B5F46CD91F39BD8300220874 /* MCGameViewController.m in Sources */,
 				B57023601F396620000D8170 /* main.m in Sources */,
+				B5F46CD31F39BA4000220874 /* ControllerManager.m in Sources */,
 				B57023651F39674A000D8170 /* MCAppdelegate.m in Sources */,
+				B5F46CD61F39BD7800220874 /* MCGuideViewController.m in Sources */,
 				B57023691F396D5E000D8170 /* MCModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -337,6 +377,7 @@
 				B57023571F3963B0000D8170 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

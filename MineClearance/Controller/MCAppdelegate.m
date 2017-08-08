@@ -7,6 +7,7 @@
 //
 
 #import "MCAppdelegate.h"
+#import "ControllerManager.h"
 
 @interface MCAppdelegate ()<UIApplicationDelegate>
 
@@ -22,7 +23,7 @@
 
     self.window.backgroundColor = [UIColor whiteColor];
 
-    self.window.rootViewController = [UIViewController new];
+    self.window.rootViewController = [[ControllerManager SharedManager] rootViewController];
 
     [self.window makeKeyAndVisible];
 
