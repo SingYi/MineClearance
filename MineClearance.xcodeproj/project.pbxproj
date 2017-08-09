@@ -12,6 +12,7 @@
 		B57023621F3966FD000D8170 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B570235D1F396612000D8170 /* LaunchScreen.storyboard */; };
 		B57023651F39674A000D8170 /* MCAppdelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B57023641F39674A000D8170 /* MCAppdelegate.m */; };
 		B57023691F396D5E000D8170 /* MCModel.m in Sources */ = {isa = PBXBuildFile; fileRef = B57023681F396D5E000D8170 /* MCModel.m */; };
+		B599402D1F3AA210005E5B2E /* MineCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B599402C1F3AA210005E5B2E /* MineCell.m */; };
 		B5F46CD31F39BA4000220874 /* ControllerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F46CD21F39BA4000220874 /* ControllerManager.m */; };
 		B5F46CD61F39BD7800220874 /* MCGuideViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F46CD51F39BD7800220874 /* MCGuideViewController.m */; };
 		B5F46CD91F39BD8300220874 /* MCGameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F46CD81F39BD8300220874 /* MCGameViewController.m */; };
@@ -29,6 +30,8 @@
 		B57023661F39682E000D8170 /* MCPCH.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCPCH.pch; sourceTree = "<group>"; };
 		B57023671F396D5E000D8170 /* MCModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCModel.h; sourceTree = "<group>"; };
 		B57023681F396D5E000D8170 /* MCModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MCModel.m; sourceTree = "<group>"; };
+		B599402B1F3AA210005E5B2E /* MineCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MineCell.h; sourceTree = "<group>"; };
+		B599402C1F3AA210005E5B2E /* MineCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MineCell.m; sourceTree = "<group>"; };
 		B5F46CD11F39BA4000220874 /* ControllerManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControllerManager.h; sourceTree = "<group>"; };
 		B5F46CD21F39BA4000220874 /* ControllerManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControllerManager.m; sourceTree = "<group>"; };
 		B5F46CD41F39BD7800220874 /* MCGuideViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MCGuideViewController.h; sourceTree = "<group>"; };
@@ -110,6 +113,8 @@
 			isa = PBXGroup;
 			children = (
 				B570235D1F396612000D8170 /* LaunchScreen.storyboard */,
+				B599402B1F3AA210005E5B2E /* MineCell.h */,
+				B599402C1F3AA210005E5B2E /* MineCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -221,6 +226,7 @@
 				B5F46CD31F39BA4000220874 /* ControllerManager.m in Sources */,
 				B57023651F39674A000D8170 /* MCAppdelegate.m in Sources */,
 				B5F46CD61F39BD7800220874 /* MCGuideViewController.m in Sources */,
+				B599402D1F3AA210005E5B2E /* MineCell.m in Sources */,
 				B57023691F396D5E000D8170 /* MCModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

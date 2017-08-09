@@ -7,13 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MCModel.h"
 
-typedef enum : NSUInteger {
-    MCPrimary,
-    MCMiddle,
-    MCHigh,
-    MCCustom
-} MCGameClass;
 
 @interface MCGameViewController : UIViewController
 
