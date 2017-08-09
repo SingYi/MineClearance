@@ -42,7 +42,7 @@
 
 - (void)pushGameView {
 
-    self.gameViewController.gameClass = MCHigh;
+    self.gameViewController.gameClass = MCPrimary;
     [self.navigationController pushViewController:self.gameViewController animated:YES];
 
 }

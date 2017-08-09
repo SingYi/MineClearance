@@ -42,16 +42,7 @@ static MCModel *model = nil;
 //开始游戏
 - (NSArray *)gameStartWithSelectIndex:(NSInteger)idx {
 
-    //随机生成地雷
-    if (_modelArray.count == 0) {
-        for (NSInteger i = 0; i < _rowNumber * _columnNumber; i++) {
-            [_modelArray setObject:[NSNumber numberWithInteger:0] atIndexedSubscript:i];
-        }
-    } else {
-        [_modelArray enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-            [_modelArray replaceObjectAtIndex:idx withObject:[NSNumber numberWithInteger:0]];
-        }];
-    }
+    [self resetModelArray];
     BOOL isNext = [self getMineRandomWithIndex:idx];
 
     if (isNext) {
@@ -166,6 +157,73 @@ static MCModel *model = nil;
 }
 
 
+/** 翻开下标为0的周围所有格子,如果周围存在还有为0的格子,继续翻开下标为0的格子 */
+- (NSSet *)clickNoMineCellWithIndex:(NSInteger)index {
+    NSMutableSet<NSNumber *> *alreadySet = [NSMutableSet setWithObject:[NSNumber numberWithInteger:index]];
+    NSMutableSet<NSNumber *> *allSet = [self findEmptyIndex:index];
+    //判断是否计算完毕
+    allSet = [self alreadySet:alreadySet allSet:allSet WithMineArray:self.modelArray];
+
+    for (NSNumber *num in allSet) {
+        [alreadySet unionSet:[self findAroundWihtIndex:num.integerValue]];
+    }
+
+    for (NSNumber *num in alreadySet) {
+        self.showArray[num.integerValue] = [NSNumber numberWithInt:1];
+    }
+
+    return alreadySet;
+}
+
+
+//计算周围8个方向是否有空
+- (NSMutableSet *)findEmptyIndex:(NSInteger)idx {
+
+    NSMutableSet *set = [NSMutableSet set];
+
+    if (self.modelArray[idx].integerValue == 0) {
+        [set addObject:[NSNumber numberWithInteger:idx]];
+    }
+
+    NSArray *array = [self selectTheItemAround8itemsWithIndex:idx];
+
+    [array enumerateObjectsUsingBlock:^(NSNumber * obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        if (self.modelArray[obj.integerValue].integerValue == 0) {
+            [set addObject:obj];
+        }
+    }];
+
+    return set;
+
+}
+
+/** 判断是否计算完毕 */
+- (NSMutableSet *)alreadySet:(NSMutableSet *)alreadySet allSet:(NSMutableSet *)allSet WithMineArray:(NSMutableArray *)mineArray {
+    NSMutableSet<NSNumber *> *beingSet = [NSMutableSet setWithSet:allSet];
+    [beingSet minusSet:alreadySet];
+
+    if (beingSet.count == 0) {
+        return allSet;
+    } else {
+        [alreadySet unionSet:beingSet];
+        for (NSNumber *num in beingSet) {
+            [allSet unionSet:[self findEmptyIndex:num.integerValue]];
+        }
+        allSet = [self alreadySet:alreadySet allSet:allSet WithMineArray:mineArray];
+    }
+    return allSet;
+}
+
+- (NSMutableSet *)findAroundWihtIndex:(NSInteger)idx {
+    NSMutableSet *set = [NSMutableSet set];
+    NSArray *array = [self selectTheItemAround8itemsWithIndex:idx];
+
+    [array enumerateObjectsUsingBlock:^(NSNumber * obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [set addObject:obj];
+    }];
+
+    return set;
+}
 
 //根据选中的下标,返回周围8个格子的坐标
 - (NSArray *)selectTheItemAround8itemsWithIndex:(NSInteger)idx {
@@ -258,6 +316,7 @@ static MCModel *model = nil;
     }
 
     _modelArray = [NSMutableArray arrayWithCapacity:_rowNumber * _columnNumber];
+    _showArray = [NSMutableArray arrayWithCapacity:_rowNumber * _columnNumber];
 }
 
 
@@ -266,20 +325,32 @@ static MCModel *model = nil;
     if (_rowNumber == 0 || _columnNumber == 0) {
         return nil;
     }
-    NSMutableArray *array = [NSMutableArray arrayWithCapacity:_rowNumber * _columnNumber];
 
-    for (int i = 0; i < _rowNumber * _columnNumber; i++) {
-        [array setObject:[NSNumber numberWithInt:0] atIndexedSubscript:i];
+    if (self.showArray) {
+        for (int i = 0; i < _rowNumber * _columnNumber; i++) {
+            [self.showArray setObject:[NSNumber numberWithInt:0] atIndexedSubscript:i];
+        }
+    } else {
+        NSLog(@"显示数组出错");
     }
 
-    return array;
+    return self.showArray;
+}
+
+- (void)resetModelArray {
+    //随机生成地雷
+    if (_modelArray.count == 0) {
+        for (NSInteger i = 0; i < _rowNumber * _columnNumber; i++) {
+            [_modelArray setObject:[NSNumber numberWithInteger:0] atIndexedSubscript:i];
+        }
+    } else {
+        [_modelArray enumerateObjectsUsingBlock:^(NSNumber * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [_modelArray replaceObjectAtIndex:idx withObject:[NSNumber numberWithInteger:0]];
+        }];
+    }
 }
 
 #pragma mark - getter
-//- (NSMutableArray<NSNumber *> *)modelArray {
-
-
-//}
 
 
 

@@ -11,7 +11,7 @@
 #import "MineCell.h"
 
 #define CELLIDE @"MINECOLLECTIONCELL"
-#define CELL_WIDTH kSCREEN_WIDTH / 9
+#define CELL_WIDTH kSCREEN_WIDTH / 9.f
 
 @interface MCGameViewController ()<UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -32,6 +32,11 @@
 /** game Start */
 @property (nonatomic, assign) BOOL gameFirstClick;
 
+/** long press */
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPress;
+
+@property (nonatomic, strong) UIButton *startButton;
+
 @end
 
 @implementation MCGameViewController
@@ -46,25 +51,22 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     [self.view addSubview:self.mapBackground];
     [self.mapBackground addSubview:self.mapCollectionView];
+    [self.view addSubview:self.startButton];
 }
 
 #pragma mark - game logic
 - (void)startGame {
     //初始化地图
     //设置显示数组
-    _showArray = [[MCModel SharedModel] setShowArray];
-
-    //设置滑动范围
-    self.mapBackground.contentSize = CGSizeMake(CELL_WIDTH * [MCModel SharedModel].rowNumber, CELL_WIDTH * [MCModel SharedModel].columnNumber);
-
+    [[MCModel SharedModel] setShowArray];
+    //设置地雷数组
+    [[MCModel SharedModel] resetModelArray];
 
     [self.mapCollectionView reloadData];
 
     
     _gameEnd = NO;
     _gameFirstClick = YES;
-
-
 }
 
 #pragma mark - collectionView delegate And DataSource
@@ -80,6 +82,10 @@
 
     MineCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:CELLIDE forIndexPath:indexPath];
 
+   UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(findMineWithLongPress:)];
+    longPress.minimumPressDuration = 0.2;
+
+    [cell addGestureRecognizer:longPress];
 
     if (self.mineArray.count != 0) {
 
@@ -97,7 +103,24 @@
         }
     }
 
-    cell.backgroundColor = [UIColor orangeColor];
+    //配置显示状态
+    if (self.showArray[indexPath.row].integerValue == 2) {
+        //找到的地雷
+        cell.coverView.hidden = NO;
+        cell.coverView.backgroundColor = [UIColor redColor];
+    } else if (self.showArray[indexPath.row].integerValue == 1) {
+        //显示的方块
+        cell.coverView.hidden = YES;
+
+    } else if (self.showArray[indexPath.row].integerValue == 10) {
+
+    } else {
+        //未显示的方块
+        cell.coverView.hidden = NO;
+        cell.coverView.backgroundColor = [UIColor orangeColor];
+    }
+
+
 
     return cell;
 }
@@ -111,14 +134,60 @@
         if (_gameFirstClick) {
             //初始化地雷 防止第一个点到地雷
             [[MCModel SharedModel] gameStartWithSelectIndex:indexPath.row];
-//            _gameFirstClick = NO;
-            [collectionView reloadData];
+//            [collectionView reloadData];
+            _gameFirstClick = NO;
+        } else {
+            //如果不是第一点击则把点击位置的 cell 标记为1,表示已经点过
+            [self.showArray replaceObjectAtIndex:indexPath.row withObject:[NSNumber numberWithInt:1]];
         }
 
+        //判断点击的位置是否为地雷
+        if (self.mineArray[indexPath.row].integerValue == 0) {
+            //如果不是地雷,则沿着周围的方向依次翻开不是地雷的方块(只为数字)
+            NSSet *set = [[MCModel SharedModel] clickNoMineCellWithIndex:indexPath.row];
+            NSMutableArray *array = [NSMutableArray arrayWithCapacity:set.count];
+            [set enumerateObjectsUsingBlock:^(NSNumber * obj, BOOL * _Nonnull stop) {
+
+                NSIndexPath *arrayindexpath = [NSIndexPath indexPathForItem:obj.integerValue inSection:indexPath.section];
+                [array addObject:arrayindexpath];
+
+            }];
+
+            [collectionView reloadItemsAtIndexPaths:array];
+
+        } else  {
+            [collectionView reloadItemsAtIndexPaths:@[indexPath]];
+            if (self.mineArray[indexPath.row].integerValue == 10) {
+                //如果为地雷,则游戏结束
+                // [self showAlertViewWithTitle:@"游戏结束" Message:@"重新开始" Cancel:NO];
+
+            }
+        }
 
     }
 
     NSLog(@"did select item index : %ld", indexPath.row);
+}
+
+- (void)findMineWithLongPress:(UILongPressGestureRecognizer *)sender {
+
+    if (sender.state == UIGestureRecognizerStateBegan) {
+
+        CGPoint point = [sender locationInView:self.mapCollectionView];
+        NSIndexPath * indexPath = [self.mapCollectionView indexPathForItemAtPoint:point];
+
+        if (self.showArray[indexPath.row].integerValue == 1) {
+
+        }  else if (_showArray[indexPath.row].integerValue == 2) {
+            self.showArray[indexPath.row] = [NSNumber numberWithInt:0];
+        } else {
+            self.showArray[indexPath.row] = [NSNumber numberWithInt:2];
+        }
+
+        [self.mapCollectionView reloadItemsAtIndexPaths:@[indexPath]];
+
+    }
+
 }
 
 #pragma mark - setter
@@ -126,13 +195,14 @@
     _gameClass = gameClass;
     [MCModel SharedModel].gameClass = gameClass;
 
+        //设置地图大小
     if (gameClass == MCPrimary) {
         self.mapCollectionView.frame = CGRectMake(0, 0, kSCREEN_WIDTH, kSCREEN_WIDTH);
     } else {
-        //设置地图大小
         self.mapCollectionView.frame = CGRectMake(0, 0, CELL_WIDTH * [MCModel SharedModel].rowNumber, CELL_WIDTH * [MCModel SharedModel].columnNumber);
     }
-
+    //设置滑动范围
+    self.mapBackground.contentSize = CGSizeMake(CELL_WIDTH * [MCModel SharedModel].rowNumber, CELL_WIDTH * [MCModel SharedModel].columnNumber);
 
     //开始游戏
     [self startGame];
@@ -145,7 +215,7 @@
         _mapBackground.bounds = CGRectMake(0, 0, kSCREEN_WIDTH, kSCREEN_WIDTH);
         _mapBackground.center = self.view.center;
         _mapBackground.bounces = NO;
-        _mapBackground.backgroundColor = [UIColor blackColor];
+        _mapBackground.backgroundColor = [UIColor blueColor];
     }
     return _mapBackground;
 }
@@ -157,7 +227,7 @@
         layout.minimumLineSpacing = 0;
         layout.minimumInteritemSpacing = 0;
 
-        _mapCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, kSCREEN_WIDTH, kSCREEN_WIDTH) collectionViewLayout:layout];
+        _mapCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) collectionViewLayout:layout];
 
 
         _mapCollectionView.delegate = self;
@@ -171,6 +241,30 @@
 
 - (NSMutableArray<NSNumber *> *)mineArray {
     return [MCModel SharedModel].modelArray;
+}
+
+- (NSMutableArray<NSNumber *> *)showArray {
+    return [MCModel SharedModel].showArray;
+}
+
+
+- (UIButton *)startButton {
+    if (!_startButton) {
+        _startButton = [UIButton buttonWithType:(UIButtonTypeCustom)];
+        _startButton.frame = CGRectMake(0, 0, 100, 50);
+        [_startButton setTitle:@"开始" forState:(UIControlStateNormal)];
+        [_startButton addTarget:self action:@selector(startGame) forControlEvents:(UIControlEventTouchUpInside)];
+    }
+    return _startButton;
+}
+
+- (UILongPressGestureRecognizer *)longPress {
+    if (!_longPress) {
+        _longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(findMineWithLongPress:)];
+
+        _longPress.minimumPressDuration = 0.5;
+    }
+    return _longPress;
 }
 
 @end

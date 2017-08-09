@@ -19,6 +19,7 @@ typedef enum : NSUInteger {
 
 /** 显示数组 */
 @property (nonatomic, strong) NSMutableArray<NSNumber *> *modelArray;
+@property (nonatomic, strong) NSMutableArray<NSNumber *> *showArray;
 
 /** 行数 */
 @property (nonatomic, assign) NSInteger rowNumber;
@@ -41,10 +42,14 @@ typedef enum : NSUInteger {
 /** 根据点击的下标开始游戏 */
 - (NSArray *)gameStartWithSelectIndex:(NSInteger)idx;
 
+/** 点击空白 */ 
+- (NSSet *)clickNoMineCellWithIndex:(NSInteger)index;
+
 #pragma mark - set map
 /** 设置显示数组 */
 - (NSMutableArray *)setShowArray;
-
+/** 初始化地雷数组 */
+- (void)resetModelArray;
 
 
 
