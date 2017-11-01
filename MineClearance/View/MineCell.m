@@ -13,8 +13,8 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-//        self.layer.borderColor = [UIColor grayColor].CGColor;
-//        self.layer.borderWidth = 1.f;
+        self.layer.borderColor = [UIColor grayColor].CGColor;
+        self.layer.borderWidth = 1.f;
     }
     return self;
 }
@@ -23,8 +23,9 @@
 - (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
 
-
 }
+
+
 
 #pragma mark - getter
 - (UILabel *)textLabel {

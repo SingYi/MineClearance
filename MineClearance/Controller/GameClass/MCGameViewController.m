@@ -11,7 +11,7 @@
 #import "MineCell.h"
 
 #define CELLIDE @"MINECOLLECTIONCELL"
-#define CELL_WIDTH kSCREEN_WIDTH / 9.f
+#define CELL_WIDTH kSCREEN_WIDTH / 9
 
 @interface MCGameViewController ()<UICollectionViewDelegate, UICollectionViewDataSource>
 
@@ -44,6 +44,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self initUserInterface];
+
+    NSLog(@" ==== %lf",CELL_WIDTH);
 }
 
 - (void)initUserInterface {
@@ -53,6 +55,7 @@
     [self.mapBackground addSubview:self.mapCollectionView];
     [self.view addSubview:self.startButton];
 }
+
 
 #pragma mark - game logic
 - (void)startGame {
@@ -215,24 +218,26 @@
         _mapBackground.bounds = CGRectMake(0, 0, kSCREEN_WIDTH, kSCREEN_WIDTH);
         _mapBackground.center = self.view.center;
         _mapBackground.bounces = NO;
-        _mapBackground.backgroundColor = [UIColor blueColor];
+        _mapBackground.backgroundColor = [UIColor grayColor];
     }
     return _mapBackground;
 }
 - (UICollectionView *)mapCollectionView {
     if (!_mapCollectionView) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-        
+
         layout.itemSize = CGSizeMake(CELL_WIDTH, CELL_WIDTH);
+
         layout.minimumLineSpacing = 0;
         layout.minimumInteritemSpacing = 0;
+//        layout.sectionInset = UIEdgeInsetsMake(-0.01, -0.01, -0.01, -0.01);
 
-        _mapCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 0, 0) collectionViewLayout:layout];
-
+        _mapCollectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, kSCREEN_WIDTH, kSCREEN_WIDTH) collectionViewLayout:layout];
 
         _mapCollectionView.delegate = self;
         _mapCollectionView.dataSource = self;
 
+        _mapCollectionView.backgroundColor = [UIColor grayColor];
 
         [_mapCollectionView registerClass:[MineCell class] forCellWithReuseIdentifier:CELLIDE];
     }
